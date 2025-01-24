@@ -13,6 +13,7 @@ const getTokenFromURL = () => {
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [topTracks, setTopTracks] = useState(null);
+  const [topArtists, setTopArtists] = useState(null);
 
   useEffect(() => {
     const spotifyToken = getTokenFromURL().access_token;
@@ -29,6 +30,15 @@ function App() {
       })
         .then((response) => response.json())
         .then((data) => setTopTracks(data.items))
+        .catch((error) => console.error("Error fetching user data:", error));
+
+      fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=10', {
+        headers: {
+          'Authorization': `Bearer ${spotifyToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => setTopArtists(data.items))
         .catch((error) => console.error("Error fetching user data:", error));
     }
   }, []);
@@ -53,6 +63,30 @@ function App() {
           {topTracks && topTracks.length > 0 ? (
             <div>
               <ImageGrid2024 topItems={topTracks}/>
+            </div>
+            
+          ) : (
+            <p>Loading your top tracks...</p>  // Handle case when data is still loading
+          )}
+
+          <h3>Your Top Artists Last Month</h3>
+          {topArtists && topArtists.length > 0 ? (
+   
+            <div>
+              {topArtists.map((item, index) => (
+                <li key={index}>{index + 1}. {item.name}</li>
+              ))}
+            </div>
+          ) : (
+            <p>Loading your top artists...</p>  // Handle case when data is still loading
+          )}
+
+          <h3>Your Top Tracks Last Month</h3>
+          {topTracks && topTracks.length > 0 ? (
+            <div>
+              {topTracks.slice(1, 11).map((item, index) => (
+                <li key={index}>{index + 1}. {item.name}</li>
+              ))}
             </div>
             
           ) : (
