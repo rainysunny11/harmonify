@@ -7,8 +7,6 @@
  * https://developer.spotify.com/documentation/web-api/tutorials/code-flow
  */
 
-const CREDENTIALS = require('./credentials.json');
-
 var express = require('express');
 var request = require('request');
 var crypto = require('crypto');
@@ -16,10 +14,9 @@ var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
-var client_id = CREDENTIALS.client_id; // your clientId
-var client_secret = CREDENTIALS.client_secret; // Your secret
-var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
-
+var client_id = process.env.CLIENT_ID;
+var client_secret = process.env.CLIENT_SECRET;
+var redirect_uri = process.env.REDIRECT_URI;
 
 const generateRandomString = (length) => {
   return crypto

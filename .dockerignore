@@ -1,0 +1,7 @@
+# Ignore node_modules from both frontend and backend
+frontend/node_modules/
+backend/authorization_code/node_modules/
+
+# Ignore Git-related files
+.git/
+.gitignore
