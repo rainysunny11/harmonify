@@ -2,6 +2,9 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import ImageGrid2024 from './report/ImageGrid2024';
 
+// var url = process.env.BACKEND_URL;
+var url = "http://localhost:8888/"
+
 const getTokenFromURL = () => {
   return window.location.hash.substring(1).split('&').reduce((initial, item) => {
     let parts = item.split("=");
@@ -49,7 +52,7 @@ function App() {
         <>
           <h2>What did I listen to last year?</h2>
           <button 
-            onClick={() => window.location.href = 'http://localhost:8888/'} 
+            onClick={() => window.location.href = url} 
             style={{ padding: "10px 20px", fontSize: "16px", cursor: "pointer" }}
           >
           I want to know
