@@ -4,7 +4,10 @@
   "description": "Spotify Authorization Code flow example",
   "author": "Spotify",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
     "cookie-parser": "1.4.6",

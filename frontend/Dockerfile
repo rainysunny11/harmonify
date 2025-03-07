@@ -25,4 +25,3 @@ COPY --from=frontend-builder /frontend/build .
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
-    

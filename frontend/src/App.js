@@ -2,8 +2,9 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import ImageGrid2024 from './report/ImageGrid2024';
 
-// var url = process.env.BACKEND_URL;
-var url = "http://localhost:8888/"
+const url = process.env.REACT_APP_BACKEND_URL;
+console.log("Backend URL:", url);
+// var url = "http://localhost:8888/"
 
 const getTokenFromURL = () => {
   return window.location.hash.substring(1).split('&').reduce((initial, item) => {
