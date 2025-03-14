@@ -16,8 +16,8 @@ var cookieParser = require('cookie-parser');
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
-const redirect_uri = process.env.REDIRECT_URI;
-const frontend_url = process.env.FRONTEND_URL;
+const redirect_uri = process.env.REDIRECT_URI || 'http://localhost:8888/callback';
+const frontend_url = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 const generateRandomString = (length) => {
   return crypto

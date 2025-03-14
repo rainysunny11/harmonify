@@ -1,9 +1,11 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import ImageGrid2024 from './report/ImageGrid2024';
+import config from './config.js';
 
-const url = process.env.REACT_APP_BACKEND_URL;
+const url = config.BACKEND_URL;
 console.log("Backend URL:", url);
+
 
 const getTokenFromURL = () => {
   return window.location.hash.substring(1).split('&').reduce((initial, item) => {
