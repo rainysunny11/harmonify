@@ -40,7 +40,6 @@ app.get('/login', function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
 
-  // your application requests authorization
   var scope = 'user-read-private user-read-email user-top-read';
   var authUrl = 'https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -49,7 +48,7 @@ app.get('/login', function(req, res) {
       scope: scope,
       redirect_uri: redirect_uri,
       state: state,
-      show_dialog: true
+      show_dialog: true // show permissions page
     });
   
   res.redirect(authUrl);
@@ -104,13 +103,13 @@ app.get('/callback', function(req, res) {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect(frontend_url + '/#' +
+        res.redirect(frontend_url + "#" +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect(frontend_url + '/#' +
+        res.redirect(frontend_url + "#" +
           querystring.stringify({
             error: 'invalid_token'
           }));
