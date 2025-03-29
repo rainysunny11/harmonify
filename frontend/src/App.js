@@ -3,9 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ImageGrid2024 from './report/ImageGrid2024';
 import config from './config.js';
 
-const url = config.BACKEND_URL;
-console.log("Backend URL:", url);
-
+const backend_url = config.BACKEND_URL;
 
 const getTokenFromURL = () => {
   return window.location.hash.substring(1).split('&').reduce((initial, item) => {
@@ -54,7 +52,7 @@ function App() {
         <>
           <h2>What did I listen to last year?</h2>
           <button 
-            onClick={() => window.location.href = url} 
+            onClick={() => window.location.href = backend_url} 
             style={{ padding: "10px 20px", fontSize: "16px", cursor: "pointer" }}
           >
           I want to know

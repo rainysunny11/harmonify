@@ -42,14 +42,18 @@ app.get('/login', function(req, res) {
 
   // your application requests authorization
   var scope = 'user-read-private user-read-email user-top-read';
-  res.redirect('https://accounts.spotify.com/authorize?' +
+  var authUrl = 'https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
       client_id: client_id,
       scope: scope,
       redirect_uri: redirect_uri,
-      state: state
-    }));
+      state: state,
+      show_dialog: true
+    });
+  
+  res.redirect(authUrl);
+  
 });
 
 app.get('/callback', function(req, res) {
@@ -86,7 +90,7 @@ app.get('/callback', function(req, res) {
       if (!error && response.statusCode === 200) {
 
         var access_token = body.access_token,
-            refresh_token = body.refresh_token;
+        refresh_token = body.refresh_token;
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
