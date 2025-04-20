@@ -82,7 +82,7 @@ function App() {
     setTimeRange(newTimeRange);
   };
   
-  // Custom time range selector
+  // Custom time range selector with Y2K style
   const CustomTimeSelector = ({ currentTimeRange, onChange }) => {
     const timeOptions = [
       { value: 'short_term', label: '4 Weeks' },
@@ -124,7 +124,7 @@ function App() {
       const canvas = await html2canvas(ref.current, {
         useCORS: true,
         allowTaint: true,
-        backgroundColor: "#191414",
+        backgroundColor: "#1e1e1e",
         scale: 2,
       });
       
@@ -145,20 +145,17 @@ function App() {
 
   return (
     <div className="App">
-      {/* Background gradient for login screen */}
-      {!loggedIn && <div className="welcome-gradient"></div>}
-      
       {/* Login Screen */}
       {(!loggedIn) && (
         <div className="welcome-container d-flex justify-content-center align-items-center text-center min-vh-100">
+          <div className="welcome-gradient"></div>
           <div className="welcome-box">
-            <h1 className="welcome-title">Harmonify</h1>
-            <p className="mb-5 lead">Discover your unique musical fingerprint</p>
+            <h1 className="welcome-title">Harmonify 2000</h1>
+            <p className="welcome-subtitle">Discover your music profile</p>
             <button
               onClick={() => window.location.href = backend_url}
-              className="spotify-btn d-flex align-items-center mx-auto"
+              className="y2k-btn d-flex align-items-center mx-auto"
             >
-              {/* <FaSpotify className="me-2" size={24} /> */}
               Connect with Spotify
             </button>
           </div>
@@ -173,14 +170,12 @@ function App() {
             <div className="container">
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center">
-                  {/* <FaSpotify className="me-2" size={28} color="#1DB954" /> */}
-                  <h2 className="m-0">Harmonify</h2>
+                  <h2 className="m-0">Harmonify 2000</h2>
                 </div>
                 <button 
                   onClick={handleLogout} 
-                  className="spotify-logout d-flex align-items-center"
+                  className="y2k-logout d-flex align-items-center"
                 >
-                  {/* <FaSignOutAlt className="me-2" /> */}
                   Logout
                 </button>
               </div>
@@ -191,10 +186,10 @@ function App() {
             {/* Loading State */}
             {isLoading ? (
               <div className="text-center py-5">
-                <div className="spinner-border text-success loading-animation" role="status" style={{ width: "3rem", height: "3rem" }}>
+                <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
                   <span className="visually-hidden">Loading...</span>
                 </div>
-                <p className="mt-3">Analyzing your Spotify data...</p>
+                <p className="mt-3">Loading your data...</p>
               </div>
             ) : (
               <>
@@ -208,46 +203,47 @@ function App() {
                 </div>
 
                 {/* Top Artists Grid */}
-                <div className="spotify-container mb-5">
-                  <h3 className="spotify-heading">
+                <div className="y2k-container mb-5 position-relative">
+                  <h3 className="y2k-heading">
                     Your Top Artists {getTimeRangeLabel(timeRange)}
                   </h3>
                   
-                  <div ref={artistsGridRef} className="section-grid">
-                    <button
-                      className="download-button"
-                      onClick={() => downloadAsImage(artistsGridRef, `top-artists-${timeRange}.png`)}
-                      disabled={isDownloading}
-                      title="Download as image"
-                    >
-                      {/* <FaCamera /> */}
-                      📷
-                    </button>
-                    
-                    <div className="row g-4">
+                  <button
+                    className="download-button"
+                    onClick={() => downloadAsImage(artistsGridRef, `top-artists-${timeRange}.png`)}
+                    disabled={isDownloading}
+                  >
+                    {isDownloading ? 'Processing...' : 'Save Image'}
+                  </button>
+                  
+                  <div ref={artistsGridRef}>
+                    <div className="grid-wrapper">
                       {topArtists && topArtists.length > 0 ? (
                         topArtists.slice(0, 9).map((artist, index) => (
-                          <div key={artist.id} className="col-12 col-md-4">
-                            <div className="spotify-card">
-                              <div style={{ position: 'relative', height: '220px' }}>
-                                <img 
-                                  src={artist.images && artist.images[0] ? artist.images[0].url : '/placeholder-artist.png'} 
-                                  alt={artist.name}
-                                  crossOrigin="anonymous"
-                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                />
-                                <div className="image-overlay"></div>
-                                <div style={{ position: 'absolute', bottom: '10px', left: '10px', right: '10px' }}>
-                                  <span className="spotify-badge">{index + 1}</span>
-                                  <h5 className="item-name">{artist.name}</h5>
+                          <div key={artist.id} className="square-item">
+                            <div className="square-content">
+                              <div className="y2k-card square-card">
+                                <div className="square-image-container" style={{ flex: '1 0 auto' }}>
+                                  <img 
+                                    src={artist.images && artist.images[0] ? artist.images[0].url : '/placeholder-artist.png'} 
+                                    alt={artist.name}
+                                    crossOrigin="anonymous"
+                                    className="square-image"
+                                  />
+                                </div>
+                                <div className="p-2 d-flex align-items-center" style={{ flex: '0 0 auto' }}>
+                                  <div className="y2k-badge">{index + 1}</div>
+                                  <div className="text-truncate">
+                                    <h5 className="item-name">{artist.name}</h5>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         ))
                       ) : (
-                        <div className="col-12 text-center py-5">
-                          <p>No artist data available for this time period</p>
+                        <div className="col-12 text-center py-4">
+                          <p>No data available for this time period</p>
                         </div>
                       )}
                     </div>
@@ -255,47 +251,50 @@ function App() {
                 </div>
 
                 {/* Top Tracks Grid */}
-                <div className="spotify-container mb-5">
-                  <h3 className="spotify-heading">
+                <div className="y2k-container mb-5 position-relative">
+                  <h3 className="y2k-heading">
                     Your Top Tracks {getTimeRangeLabel(timeRange)}
                   </h3>
                   
-                  <div ref={tracksGridRef} className="section-grid">
-                    <button
-                      className="download-button"
-                      onClick={() => downloadAsImage(tracksGridRef, `top-tracks-${timeRange}.png`)}
-                      disabled={isDownloading}
-                      title="Download as image"
-                    >
-                      {/* <FaCamera /> */}
-                      📷
-                    </button>
-                    
-                    <div className="row g-4">
+                  <button
+                    className="download-button"
+                    onClick={() => downloadAsImage(tracksGridRef, `top-tracks-${timeRange}.png`)}
+                    disabled={isDownloading}
+                  >
+                    {isDownloading ? 'Processing...' : 'Save Image'}
+                  </button>
+                  
+                  <div ref={tracksGridRef}>
+                    <div className="grid-wrapper">
                       {topTracks && topTracks.length > 0 ? (
                         topTracks.slice(0, 9).map((track, index) => (
-                          <div key={track.id} className="col-12 col-md-4">
-                            <div className="spotify-card">
-                              <div style={{ position: 'relative', height: '220px' }}>
-                                <img 
-                                  src={track.album && track.album.images && track.album.images[0] ? track.album.images[0].url : '/placeholder-album.png'} 
-                                  alt={track.name}
-                                  crossOrigin="anonymous"
-                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                />
-                                <div className="image-overlay"></div>
-                                <div style={{ position: 'absolute', bottom: '10px', left: '10px', right: '10px' }}>
-                                  <span className="spotify-badge">{index + 1}</span>
-                                  <h5 className="item-name">{track.name}</h5>
-                                  <p className="item-artist">{track.artists.map(artist => artist.name).join(', ')}</p>
+                          <div key={track.id} className="square-item">
+                            <div className="square-content">
+                              <div className="y2k-card square-card">
+                                <div className="square-image-container" style={{ flex: '1 0 auto' }}>
+                                  <img 
+                                    src={track.album && track.album.images && track.album.images[0] ? track.album.images[0].url : '/placeholder-album.png'} 
+                                    alt={track.name}
+                                    crossOrigin="anonymous"
+                                    className="square-image"
+                                  />
+                                </div>
+                                <div className="p-2" style={{ flex: '0 0 auto' }}>
+                                  <div className="d-flex align-items-center">
+                                    <div className="y2k-badge">{index + 1}</div>
+                                    <div className="text-truncate">
+                                      <h5 className="item-name">{track.name}</h5>
+                                      <p className="item-artist">{track.artists.map(artist => artist.name).join(', ')}</p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         ))
                       ) : (
-                        <div className="col-12 text-center py-5">
-                          <p>No track data available for this time period</p>
+                        <div className="col-12 text-center py-4">
+                          <p>No data available for this time period</p>
                         </div>
                       )}
                     </div>
@@ -304,7 +303,7 @@ function App() {
                 
                 {/* Footer */}
                 <div className="footer">
-                  <p>Harmonify • Connect through music • {new Date().getFullYear()}</p>
+                  <p>Harmonify 2000 • Connect through music • {new Date().getFullYear()}</p>
                 </div>
               </>
             )}
