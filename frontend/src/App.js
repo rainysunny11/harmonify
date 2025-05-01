@@ -16,6 +16,7 @@ function App() {
   const [timeRange, setTimeRange] = useState('short_term');
   const [isLoading, setIsLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [flippedCards, setFlippedCards] = useState({});
   
   // Refs for the sections we want to download
   const artistsGridRef = useRef(null);
@@ -54,6 +55,11 @@ function App() {
     }
   }, [timeRange, loggedIn]);
   
+  // Reset flipped cards when changing time range
+  useEffect(() => {
+    setFlippedCards({});
+  }, [timeRange]);
+  
   // Function to fetch data from Spotify
   const fetchSpotifyData = async (token, range) => {
     setIsLoading(true);
@@ -80,6 +86,17 @@ function App() {
   // Handle time range selection
   const handleTimeRangeChange = (newTimeRange) => {
     setTimeRange(newTimeRange);
+  };
+  
+  // Handle card flip
+  const toggleCardFlip = (id) => {
+    // Don't toggle when downloading
+    if (isDownloading) return;
+    
+    setFlippedCards(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
   };
   
   // Custom time range selector with Y2K style
@@ -119,28 +136,37 @@ function App() {
     
     setIsDownloading(true);
     
-    try {
-      // Capture with improved settings
-      const canvas = await html2canvas(ref.current, {
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: "#1e1e1e",
-        scale: 2,
-      });
-      
-      // Create download link
-      const link = document.createElement('a');
-      link.download = fileName;
-      link.href = canvas.toDataURL('image/png');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error creating image:", error);
-      alert("Could not download the image. This might be due to CORS restrictions.");
-    } finally {
-      setIsDownloading(false);
-    }
+    // First, ensure all cards are showing front face for the screenshot
+    const currentFlippedState = {...flippedCards};
+    setFlippedCards({});
+    
+    // Wait a moment for the state to update and cards to flip back
+    setTimeout(async () => {
+      try {
+        // Capture with improved settings
+        const canvas = await html2canvas(ref.current, {
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "#1e1e1e",
+          scale: 2,
+        });
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error creating image:", error);
+        alert("Could not download the image. This might be due to CORS restrictions.");
+      } finally {
+        // Restore previous card states
+        setFlippedCards(currentFlippedState);
+        setIsDownloading(false);
+      }
+    }, 100);
   };
 
   return (
@@ -222,19 +248,33 @@ function App() {
                         topArtists.slice(0, 9).map((artist, index) => (
                           <div key={artist.id} className="square-item">
                             <div className="square-content">
-                              <div className="y2k-card square-card">
-                                <div className="square-image-container" style={{ flex: '1 0 auto' }}>
-                                  <img 
-                                    src={artist.images && artist.images[0] ? artist.images[0].url : '/placeholder-artist.png'} 
-                                    alt={artist.name}
-                                    crossOrigin="anonymous"
-                                    className="square-image"
-                                  />
-                                </div>
-                                <div className="p-2 d-flex align-items-center" style={{ flex: '0 0 auto' }}>
-                                  <div className="y2k-badge">{index + 1}</div>
-                                  <div className="text-truncate">
-                                    <h5 className="item-name">{artist.name}</h5>
+                              <div 
+                                className={`flip-card ${flippedCards['artist-'+artist.id] ? 'flipped' : ''}`} 
+                                onClick={() => toggleCardFlip('artist-'+artist.id)}
+                              >
+                                <div className="flip-card-inner">
+                                  {/* Front of card */}
+                                  <div className="flip-card-front">
+                                    <div className="card-rank">{index + 1}</div>
+                                    <img 
+                                      src={artist.images && artist.images[0] ? artist.images[0].url : '/placeholder-artist.png'} 
+                                      alt={artist.name}
+                                      crossOrigin="anonymous"
+                                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                  </div>
+                                  
+                                  {/* Back of card */}
+                                  <div className="flip-card-back">
+                                    <div className="back-content">
+                                      <div className="card-rank">{index + 1}</div>
+                                      <h3 className="back-title">{artist.name}</h3>
+                                      <p className="back-subtitle">
+                                        {artist.genres && artist.genres.length > 0 
+                                          ? artist.genres.slice(0, 2).join(', ')
+                                          : 'Artist'}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -270,21 +310,33 @@ function App() {
                         topTracks.slice(0, 9).map((track, index) => (
                           <div key={track.id} className="square-item">
                             <div className="square-content">
-                              <div className="y2k-card square-card">
-                                <div className="square-image-container" style={{ flex: '1 0 auto' }}>
-                                  <img 
-                                    src={track.album && track.album.images && track.album.images[0] ? track.album.images[0].url : '/placeholder-album.png'} 
-                                    alt={track.name}
-                                    crossOrigin="anonymous"
-                                    className="square-image"
-                                  />
-                                </div>
-                                <div className="p-2" style={{ flex: '0 0 auto' }}>
-                                  <div className="d-flex align-items-center">
-                                    <div className="y2k-badge">{index + 1}</div>
-                                    <div className="text-truncate">
-                                      <h5 className="item-name">{track.name}</h5>
-                                      <p className="item-artist">{track.artists.map(artist => artist.name).join(', ')}</p>
+                              <div 
+                                className={`flip-card ${flippedCards['track-'+track.id] ? 'flipped' : ''}`} 
+                                onClick={() => toggleCardFlip('track-'+track.id)}
+                              >
+                                <div className="flip-card-inner">
+                                  {/* Front of card */}
+                                  <div className="flip-card-front">
+                                    <div className="card-rank">{index + 1}</div>
+                                    <img 
+                                      src={track.album && track.album.images && track.album.images[0] ? track.album.images[0].url : '/placeholder-album.png'} 
+                                      alt={track.name}
+                                      crossOrigin="anonymous"
+                                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                  </div>
+                                  
+                                  {/* Back of card */}
+                                  <div className="flip-card-back">
+                                    <div className="back-content">
+                                      <div className="card-rank">{index + 1}</div>
+                                      <h3 className="back-title">{track.name}</h3>
+                                      <p className="back-subtitle">
+                                        {track.artists.map(artist => artist.name).join(', ')}
+                                      </p>
+                                      <p className="back-subtitle">
+                                        {track.album.name}
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
