@@ -176,7 +176,7 @@ function App() {
         <div className="welcome-container d-flex justify-content-center align-items-center text-center min-vh-100">
           <div className="welcome-gradient"></div>
           <div className="welcome-box">
-            <h1 className="welcome-title">Harmonify 2000</h1>
+            <h1 className="welcome-title">Harmonify</h1>
             <p className="welcome-subtitle">Discover your music profile</p>
             <button
               onClick={() => window.location.href = backend_url}
@@ -196,7 +196,7 @@ function App() {
             <div className="container">
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center">
-                  <h2 className="m-0">Harmonify 2000</h2>
+                  <h2 className="m-0">Harmonify</h2>
                 </div>
                 <button 
                   onClick={handleLogout} 
@@ -355,7 +355,7 @@ function App() {
                 
                 {/* Footer */}
                 <div className="footer">
-                  <p>Harmonify 2000 • Connect through music • {new Date().getFullYear()}</p>
+                  <p>Harmonify• Connect through music • {new Date().getFullYear()}</p>
                 </div>
               </>
             )}
