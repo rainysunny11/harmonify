@@ -26,6 +26,7 @@ h1, h2, h3, h4, h5 {
 .y2k-container {
   background-color: var(--y2k-black);
   border: 2px solid var(--y2k-silver);
+  color: var(--y2k--silver);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(193, 125, 255, 0.2);
   padding: 25px;
