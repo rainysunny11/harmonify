@@ -1,5 +1,7 @@
+// React
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+// Style
 import './Navbar.css';
 
 const Navbar = ({ onLogout }) => {

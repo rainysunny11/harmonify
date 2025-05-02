@@ -1,5 +1,8 @@
+// React
 import React from 'react';
+// Components and Tools
 import FlippedCard from './FlippedCard';
+// Style
 import './ReportGrid.css';
 
 /**

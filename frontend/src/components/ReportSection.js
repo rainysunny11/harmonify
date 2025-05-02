@@ -1,7 +1,11 @@
+// React
 import React, { useRef } from 'react';
+// Components and Tools
 import ReportGrid from './ReportGrid';
-import html2canvas from 'html2canvas';
+// Style
 import './ReportSection.css';
+// Other
+import html2canvas from 'html2canvas';
 
 /**
  * Section component that contains a title, download button, and grid
@@ -36,13 +40,13 @@ const ReportSection = ({
     setIsDownloading(true);
     
     // Store current state of flipped cards
-    // const currentFlippedState = {...flippedCards};
+    const currentFlippedState = {...flippedCards};
     
     // Reset all cards to show front face
-    // onToggleFlip({}, true);
+    onToggleFlip({}, true);
     
     // Wait a moment for the state to update and cards to show front face
-    // setTimeout(async () => {
+    setTimeout(async () => {
       try {
         // Capture with improved settings
         const canvas = await html2canvas(gridRef.current, {
@@ -64,9 +68,10 @@ const ReportSection = ({
         alert("Could not download the image. This might be due to CORS restrictions.");
       } finally {
         // Restore previous card states
+        onToggleFlip(currentFlippedState, false, true);
         setIsDownloading(false);
       }
-    // }, 100);
+    }, 300); // Increased timeout to ensure state updates properly
   };
 
   return (
@@ -80,7 +85,7 @@ const ReportSection = ({
         onClick={downloadAsImage}
         disabled={isDownloading}
       >
-        {isDownloading ? 'Processing...' : 'Save Image'}
+        {isDownloading ? 'Processing...' : 'Save'}
       </button>
       
       <div ref={gridRef}>

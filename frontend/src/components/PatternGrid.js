@@ -1,6 +1,9 @@
+// React
 import React, { useEffect, useState } from 'react';
-import BLANK from '../images/blank.png';
+// Style
 import './PatternGrid.css';
+// Images
+import BLANK from '../images/blank.png';
 
 /**
  * PatternGrid component renders a grid of album images in specific patterns

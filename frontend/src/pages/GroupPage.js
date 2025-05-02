@@ -1,6 +1,9 @@
+// React
 import React from 'react';
-import './Pages.css';
+// Components and Tools
 import Footer from '../components/footer';
+// Style
+import './Pages.css';
 
 const GroupPage = () => {
   return (

@@ -1,10 +1,14 @@
+// React
 import React, { useState, useEffect } from 'react';
+// Components and Tools
 import TimeRangeSelector from '../components/TimeRangeSelector';
+import { getTopTracks, getTopArtists, getTimeRangeLabel } from '../tools/SpotifyData';
 import ReportSection from '../components/ReportSection';
 import MosaicSection from '../components/MosaicSection';
-import { getTopTracks, getTopArtists, getTimeRangeLabel } from '../tools/SpotifyData';
-import './Pages.css';
 import Footer from '../components/footer';
+// Style
+import './Pages.css';
+
 
 const ReportPage = () => {
   // State management

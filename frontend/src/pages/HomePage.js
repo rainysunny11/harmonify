@@ -1,5 +1,7 @@
+// React
 import React from 'react';
 import { Link } from 'react-router-dom';
+// Style
 import './HomePage.css';
 
 const HomePage = ({ loginUrl, isLoggedIn }) => {

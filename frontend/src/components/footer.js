@@ -1,3 +1,4 @@
+// Style
 import './Components.css';
 
 const Footer = () => {

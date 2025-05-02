@@ -1,7 +1,11 @@
+// React
 import React, { useRef, useState } from 'react';
+// Components and Tools
 import PatternGrid from './PatternGrid';
-import html2canvas from 'html2canvas';
+// Style
 import './MosaicSection.css';
+// Other
+import html2canvas from 'html2canvas';
 
 /**
  * MosaicSection component displays a section with a PatternGrid mosaic

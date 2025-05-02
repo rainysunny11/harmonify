@@ -1,4 +1,6 @@
+// React
 import React from 'react';
+// Style
 import './FlippedCard.css';
 
 /**
