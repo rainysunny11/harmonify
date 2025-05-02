@@ -12,7 +12,7 @@ const TimeRangeSelector = ({ currentTimeRange, onChange }) => {
   ];
 
   return (
-    <div className="time-range-selector mb-4">
+    <div className="time-range-selector">
       <div className="btn-group" role="group" aria-label="Time range selection">
         {timeRanges.map(range => (
           <button

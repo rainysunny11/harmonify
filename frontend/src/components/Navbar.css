@@ -1,7 +1,7 @@
 /* Navbar Styles */
 .header-bar{
-
   background-color: var(--y2k-black);
+  color: var(--y2k-silver);
   padding: 10px 10px;
 }
 
@@ -17,26 +17,25 @@
 /* Desktop Navigation */
 .nav-links-desktop {
   display: flex; 
-  gap: 20px;
+  gap: 30px;
 }
 
 .nav-link {
   color: var(--y2k-silver);
-  text-decoration: none;
-  padding: 5px 10px;
-  border-radius: 16px;
-  transition: all 0.2s ease;
-  font-weight: 500;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 20px;
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+  background-color: rgba(255, 255, 255, 0.092);
 }
 
 .nav-link.active {
   background: var(--y2k-gradient);
-  color: white;
+  color: var(--y2k-silver);
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /* Hamburger menu button */
@@ -108,7 +107,7 @@
 
 .nav-link-mobile {
   display: block;
-  padding: 12px 15px;
+  padding: 5px 15px;
   color: var(--y2k-silver);
   text-decoration: none;
   transition: all 0.2s ease;
