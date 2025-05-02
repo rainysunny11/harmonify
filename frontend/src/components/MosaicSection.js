@@ -1,14 +1,14 @@
 // React
 import React, { useRef, useState } from 'react';
 // Components and Tools
-import PatternGrid from './PatternGrid';
+import MosaicGrid from './MosaicGrid';
 // Style
 import './MosaicSection.css';
 // Other
 import html2canvas from 'html2canvas';
 
 /**
- * MosaicSection component displays a section with a PatternGrid mosaic
+ * MosaicSection component displays a section with a MosaicGrid mosaic
  * @param {Object} props - Component props
  * @param {Array} props.items - Track items to display in the mosaic
  * @param {string} props.timeRangeLabel - Formatted label for the time range
@@ -123,7 +123,7 @@ const MosaicSection = ({
             className="btn y2k-btn-sm"
             onClick={applyText}
           >
-            Apply
+            Create
           </button>
           <button 
             className="btn y2k-btn-outline-sm"
@@ -151,7 +151,7 @@ const MosaicSection = ({
         <div className="mosaic-container" ref={mosaicRef}>
           
           <div className="mosaic-grid-wrapper">
-            <PatternGrid 
+            <MosaicGrid 
               topItems={items} 
               altText="Album art" 
               pattern={pattern}

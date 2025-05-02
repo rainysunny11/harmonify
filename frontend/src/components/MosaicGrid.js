@@ -1,19 +1,19 @@
 // React
 import React, { useEffect, useState } from 'react';
 // Style
-import './PatternGrid.css';
+import './MosaicGrid.css';
 // Images
 import BLANK from '../images/blank.png';
 
 /**
- * PatternGrid component renders a grid of album images in specific patterns
+ * MosaicGrid component renders a grid of album images in specific patterns
  * @param {Object} props - Component props
  * @param {Array} props.topItems - Array of track items with album images
  * @param {string} props.altText - Alternative text for images
  * @param {string} props.pattern - Preset pattern to use ('year2024', 'apr')
  * @param {string} props.text - Custom text to display (letters and numbers)
  */
-const PatternGrid = ({ 
+const MosaicGrid = ({ 
   topItems, 
   altText = "Album cover", 
   pattern = 'year2024', 
@@ -429,4 +429,4 @@ const PatternGrid = ({
   );
 };
 
-export default PatternGrid;
+export default MosaicGrid;
