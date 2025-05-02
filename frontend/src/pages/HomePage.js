@@ -12,7 +12,6 @@ const HomePage = ({ loginUrl, isLoggedIn }) => {
         
         {isLoggedIn ? (
           <div className="d-flex flex-column align-items-center">
-            <p className="mb-3">You're logged in! Check out your stats:</p>
             <div className="d-flex gap-3">
               <Link to="/report" className="y2k-btn">
                 My Report
