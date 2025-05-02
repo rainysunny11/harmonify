@@ -11,7 +11,7 @@ const GroupPage = () => {
       
       <div className="y2k-container">
         <h3 className="y2k-heading">Create Group Session</h3>
-        <div className="text-center py-4">
+        <div className="text">
           <p>Coming soon! This feature is currently in development.</p>
           <div className="mt-3">
             <img 

@@ -36,15 +36,13 @@ const ReportSection = ({
     setIsDownloading(true);
     
     // Store current state of flipped cards
-    const currentFlippedState = {...flippedCards};
+    // const currentFlippedState = {...flippedCards};
     
-    // Make sure all cards are unflipped for the image
-    if (Object.keys(currentFlippedState).length > 0) {
-      onToggleFlip({}, true); // Reset all cards to unflipped state
-    }
+    // Reset all cards to show front face
+    // onToggleFlip({}, true);
     
     // Wait a moment for the state to update and cards to show front face
-    setTimeout(async () => {
+    // setTimeout(async () => {
       try {
         // Capture with improved settings
         const canvas = await html2canvas(gridRef.current, {
@@ -65,17 +63,10 @@ const ReportSection = ({
         console.error("Error creating image:", error);
         alert("Could not download the image. This might be due to CORS restrictions.");
       } finally {
-        // Restore previous card states (only if there were any flipped cards)
-        if (Object.keys(currentFlippedState).length > 0) {
-          setTimeout(() => {
-            onToggleFlip(currentFlippedState, false, true); // Restore previous state
-            setIsDownloading(false);
-          }, 100);
-        } else {
-          setIsDownloading(false);
-        }
+        // Restore previous card states
+        setIsDownloading(false);
       }
-    }, 100);
+    // }, 100);
   };
 
   return (
@@ -89,7 +80,7 @@ const ReportSection = ({
         onClick={downloadAsImage}
         disabled={isDownloading}
       >
-        {isDownloading ? 'Processing...' : 'Save'}
+        {isDownloading ? 'Processing...' : 'Save Image'}
       </button>
       
       <div ref={gridRef}>

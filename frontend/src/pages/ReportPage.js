@@ -61,7 +61,7 @@ const ReportPage = () => {
   
   // Handle card flip
   const handleToggleFlip = (id, reset = false, restore = false) => {
-    if (isDownloading && !restore) return;
+    if (isDownloading) return;
     
     if (reset) {
       // Reset all cards to not flipped
