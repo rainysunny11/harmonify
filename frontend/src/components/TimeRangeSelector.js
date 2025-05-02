@@ -1,4 +1,5 @@
 import React from 'react';
+import './TimeRangeSelector.css';
 
 /**
  * Component for selecting time range of Spotify data

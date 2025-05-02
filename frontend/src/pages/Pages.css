@@ -1,0 +1,233 @@
+.page-title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Download Button Styles */
+.download-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--y2k-blue);
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    opacity: 0;
+  }
+  
+.y2k-container:hover .download-button {
+    opacity: 1;
+}
+  
+  /* Item Text Styles */
+.item-name {
+    font-weight: 600;
+    margin: 0;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+.item-artist {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Time Range Selector Styles */
+  .time-selector {
+    background-color: #242424;
+    border: 1px solid #333;
+    border-radius: 24px;
+    padding: 4px;
+    display: inline-flex;
+    margin-bottom: 30px;
+  }
+  
+  .time-option {
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    margin: 0 2px;
+  }
+  
+  .time-option.active {
+    background: var(--y2k-gradient);
+    color: white;
+  }
+  
+  /* Grid Layout Styles */
+  .grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+  
+  .square-item {
+    position: relative;
+    width: 100%;
+  }
+  
+  .square-item::before {
+    content: "";
+    display: block;
+    padding-top: 100%; /* This creates a square aspect ratio */
+  }
+  
+  .square-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Card Styles */
+  .y2k-card {
+    background-color: #242424;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .y2k-badge {
+    background: var(--y2k-pink);
+    color: white;
+    font-weight: bold;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  /* Card Flip Styles */
+  .flip-card {
+    background-color: transparent;
+    perspective: 1000px;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .flip-card-front {
+    background-color: #242424;
+  }
+  
+  .flip-card-back {
+    background: linear-gradient(135deg, #5271ff 0%, #c17dff 100%);
+    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .back-content {
+    max-width: 100%;
+  }
+  
+  .back-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    word-break: break-word;
+  }
+  
+  .back-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    word-break: break-word;
+  }
+  
+  .card-rank {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--y2k-pink);
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    z-index: 10;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 767px) {
+    .grid-wrapper {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    
+    .item-name {
+      font-size: 0.9rem;
+    }
+    
+    .item-artist {
+      font-size: 0.8rem;
+    }
+    
+    .y2k-badge {
+      width: 24px;
+      height: 24px;
+      font-size: 0.8rem;
+    }
+    
+    .back-title {
+      font-size: 1rem;
+    }
+    
+    .back-subtitle {
+      font-size: 0.8rem;
+    }
+  }

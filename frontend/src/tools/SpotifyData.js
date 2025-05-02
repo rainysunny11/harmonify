@@ -12,7 +12,7 @@ export const getTokenFromURL = () => {
     }, {});
 };
 
-// Tim Ranhge
+// Tim Range
 export const getTimeRangeLabel = (timeRange) => {
     switch (timeRange) {
         case 'short_term':

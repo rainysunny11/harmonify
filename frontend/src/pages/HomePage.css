@@ -1,0 +1,42 @@
+/* Home Page Styles */
+.welcome-container {
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+  
+.welcome-gradient {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
+}
+  
+.welcome-box {
+  background-color: #242424;
+  border: 2px solid var(--y2k-silver);
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(193, 125, 255, 0.3);
+  max-width: 500px;
+  width: 90%;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Perfect centering */
+}
+
+.welcome-title {
+  font-size: 3rem;
+  background: var(--y2k-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.welcome-subtitle {
+  color: var(--y2k-silver);
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
