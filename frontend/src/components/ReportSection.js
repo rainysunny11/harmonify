@@ -81,7 +81,7 @@ const ReportSection = ({
   return (
     <div className="y2k-container mb-5 position-relative">
       <h3 className="y2k-heading">
-        Your Top {type === 'artist' ? 'Artists' : 'Tracks'} {timeRangeLabel}
+        Top {type === 'artist' ? 'Artists' : 'Tracks'}
       </h3>
       
       <button
@@ -89,7 +89,7 @@ const ReportSection = ({
         onClick={downloadAsImage}
         disabled={isDownloading}
       >
-        {isDownloading ? 'Processing...' : 'Save Image'}
+        {isDownloading ? 'Processing...' : 'Save'}
       </button>
       
       <div ref={gridRef}>

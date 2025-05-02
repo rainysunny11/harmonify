@@ -35,7 +35,6 @@ const FlippedCard = ({
           <div className="flip-card-inner">
             {/* Front of card */}
             <div className="flip-card-front">
-              <div className="card-rank">{index + 1}</div>
               <img 
                 src={imageUrl || '/placeholder.png'} 
                 alt={title}

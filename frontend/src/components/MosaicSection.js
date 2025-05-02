@@ -1,21 +1,53 @@
 import React, { useRef, useState } from 'react';
-import ImageGrid2024 from './ImageGrid2024';
+import PatternGrid from './PatternGrid';
 import html2canvas from 'html2canvas';
 import './MosaicSection.css';
 
 /**
- * MosaicSection component displays a section with an ImageGrid2024 mosaic
+ * MosaicSection component displays a section with a PatternGrid mosaic
  * @param {Object} props - Component props
  * @param {Array} props.items - Track items to display in the mosaic
  * @param {string} props.timeRangeLabel - Formatted label for the time range
  * @param {string} props.timeRange - Current time range value
+ * @param {string} props.pattern - Pattern to use for the grid ('year2024', 'apr')
+ * @param {string} props.customText - Optional custom text to display instead of a preset pattern
  */
-const MosaicSection = ({ items, timeRangeLabel, timeRange }) => {
+const MosaicSection = ({ 
+  items, 
+  timeRangeLabel, 
+  timeRange, 
+  pattern = 'year2024', 
+  customText = '' 
+}) => {
   const [isDownloading, setIsDownloading] = useState(false);
+  const [inputText, setInputText] = useState(customText);
+  const [displayText, setDisplayText] = useState(customText);
   const mosaicRef = useRef(null);
   
+  // Calculate required items based on text or pattern
+  const getRequiredItemsCount = () => {
+    if (displayText) {
+      // Calculate based on text pattern
+      let count = 0;
+      const upperText = displayText.toUpperCase();
+      
+      for (let i = 0; i < upperText.length; i++) {
+        const char = upperText[i];
+        // Each character can use up to 13 items (for number 8)
+        // Add a buffer to be safe
+        count += 15;
+      }
+      
+      return count;
+    } else {
+      // Preset patterns
+      return pattern === 'apr' ? 34 : 43;
+    }
+  };
+  
   // Check if we have enough items for the grid
-  const hasEnoughItems = items && items.length >= 43;
+  const requiredItemsCount = getRequiredItemsCount();
+  const hasEnoughItems = items && items.length >= requiredItemsCount;
   
   // Function to download mosaic as image
   const downloadMosaic = async () => {
@@ -34,7 +66,11 @@ const MosaicSection = ({ items, timeRangeLabel, timeRange }) => {
       
       // Create download link
       const link = document.createElement('a');
-      link.download = `music-mosaic-${timeRange}.png`;
+      const filename = displayText 
+        ? `music-mosaic-${displayText.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.png`
+        : `music-mosaic-${timeRange}.png`;
+        
+      link.download = filename;
       link.href = canvas.toDataURL('image/png');
       document.body.appendChild(link);
       link.click();
@@ -46,10 +82,56 @@ const MosaicSection = ({ items, timeRangeLabel, timeRange }) => {
       setIsDownloading(false);
     }
   };
+  
+  // Handle text input change
+  const handleTextChange = (e) => {
+    setInputText(e.target.value);
+  };
+  
+  // Apply the text pattern
+  const applyText = () => {
+    // Validate: limit to reasonable length and allowed characters
+    const validText = inputText.replace(/[^a-zA-Z0-9 ]/g, '').substring(0, 15);
+    setDisplayText(validText);
+  };
+  
+  // Clear custom text
+  const clearText = () => {
+    setInputText('');
+    setDisplayText('');
+  };
 
   return (
     <div className="y2k-container mb-5 position-relative">
-      <h3 className="y2k-heading">Your Music Mosaic {timeRangeLabel}</h3>
+      <h3 className="y2k-heading">Music Mosaic</h3>
+      
+      {/* Text pattern controls */}
+      <div className="mosaic-controls mb-4">
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            value={inputText}
+            onChange={handleTextChange}
+            maxLength={6}
+          />
+          <button
+            className="btn y2k-btn-sm"
+            onClick={applyText}
+          >
+            Apply
+          </button>
+          <button 
+            className="btn y2k-btn-outline-sm"
+            onClick={clearText}
+          >
+            <span className="text">Clear</span>
+          </button>
+        </div>
+        <small className="text">
+          Letters and numbers only. Max 6 characters.
+        </small>
+      </div>
       
       {hasEnoughItems && (
         <button
@@ -57,24 +139,25 @@ const MosaicSection = ({ items, timeRangeLabel, timeRange }) => {
           onClick={downloadMosaic}
           disabled={isDownloading}
         >
-          {isDownloading ? 'Processing...' : 'Save Mosaic'}
+          {isDownloading ? 'Processing...' : 'Save'}
         </button>
       )}
       
       {hasEnoughItems ? (
         <div className="mosaic-container" ref={mosaicRef}>
-          <div className="mosaic-description mb-4">
-            <p>This unique pattern showcases your music taste as visual art. Each album cover tells a story about your listening preferences.</p>
-          </div>
           
           <div className="mosaic-grid-wrapper">
-            <ImageGrid2024 topItems={items} altText="Album art" />
+            <PatternGrid 
+              topItems={items} 
+              altText="Album art" 
+              pattern={pattern}
+              text={displayText}
+            />
           </div>
         </div>
       ) : (
-        <div className="text-center py-4">
-          <p>Not enough data to create a mosaic. We need at least 43 tracks.</p>
-          <p>Keep listening to more music to unlock this feature!</p>
+        <div className="text">
+          <p>6 characters max please!</p>
         </div>
       )}
     </div>

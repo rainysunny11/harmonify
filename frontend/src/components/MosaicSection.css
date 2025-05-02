@@ -1,31 +1,90 @@
 .mosaic-container {
+  padding: 10px;
+  width: 100%;
+}
+  
+.mosaic-description {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  color: var(--y2k-silver);
+}
+  
+.mosaic-grid-wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.mosaic-controls {
+  max-width: 600px;
+  margin: 0 auto;
+}
+  
+/* Ensure the grid stays centered */
+.mosaic-grid-wrapper .image-grid {
+  margin: 0 auto;
+}
+
+/* Button styles */
+.y2k-btn-sm {
+  background: var(--y2k-gradient);
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.y2k-btn-outline-sm {
+  background: var(--y2k-silver);
+  color: white;
+  border: white;
+  border-radius: 0 4px 4px 0;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.y2k-btn-outline-sm:hover {
+  background-color: var(--y2k-blue);
+}
+
+/* Form input styles */
+.form-control {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  color: var(--y2k-silver);
+  border-radius: 4px 0 0 4px;
+}
+
+.form-control:focus {
+  background-color: #333;
+  border-color: var(--y2k-purple);
+  color: white;
+  box-shadow: 0 0 0 0.2rem rgba(193, 125, 255, 0.25);
+}
+
+.text-muted {
+  color: #999 !important;
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+  .mosaic-grid-wrapper {
     padding: 10px;
   }
   
   .mosaic-description {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-    color: var(--y2k-silver);
+    font-size: 0.9rem;
+    padding: 0 10px;
   }
   
-  .mosaic-grid-wrapper {
-    display: flex;
-    justify-content: center;
-    background-color: #1a1a1a;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+  .text-muted {
+    font-size: 0.8rem;
   }
-  
-  /* Responsive styles */
-  @media (max-width: 767px) {
-    .mosaic-grid-wrapper {
-      padding: 10px;
-    }
-    
-    .mosaic-description {
-      font-size: 0.9rem;
-    }
-  }
+}

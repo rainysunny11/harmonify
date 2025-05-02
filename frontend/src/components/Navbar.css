@@ -29,6 +29,7 @@
 
 .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.092);
+  color: var(--y2k-blue);
 }
 
 .nav-link.active {

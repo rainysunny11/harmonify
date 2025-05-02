@@ -14,6 +14,7 @@ const ReportPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
   const [flippedCards, setFlippedCards] = useState({});
+  const [customMosaicText, setCustomMosaicText] = useState('');
 
   // Handle initial data loading
   useEffect(() => {
@@ -35,8 +36,8 @@ const ReportPage = () => {
     setIsLoading(true);
     
     try {
-      // Get top tracks (get 50 for the mosaic)
-      const tracks = await getTopTracks(token, range, 50);
+      // Get top tracks (get more for the custom text patterns - need at least 100)
+      const tracks = await getTopTracks(token, range, 100);
       if (tracks) setTopTracks(tracks);
       
       // Get top artists
@@ -74,6 +75,32 @@ const ReportPage = () => {
         ...prev,
         [id]: !prev[id]
       }));
+    }
+  };
+  
+  // Determine which pattern to use based on time range
+  const getMosaicPattern = () => {
+    switch (timeRange) {
+      case 'medium_term': // 6 months
+        return 'apr';
+      case 'short_term': // 1 month
+      case 'long_term': // 1 year
+      default:
+        return 'year2024';
+    }
+  };
+
+  // Get default text based on time range
+  const getDefaultText = () => {
+    switch (timeRange) {
+      case 'short_term':
+        return 'Apr';
+      case 'medium_term':
+        return '240502';
+      case 'long_term':
+        return '2024';
+      default:
+        return '';
     }
   };
 
@@ -128,11 +155,13 @@ const ReportPage = () => {
             setIsDownloading={setIsDownloading}
           />
           
-          {/* Mosaic Section */}
+          {/* Mosaic Section - with pattern based on time range and custom text support */}
           <MosaicSection 
             items={topTracks}
             timeRange={timeRange}
             timeRangeLabel={getTimeRangeLabel(timeRange)}
+            pattern={getMosaicPattern()}
+            customText={customMosaicText || getDefaultText()}
           />
           
           <Footer/>
