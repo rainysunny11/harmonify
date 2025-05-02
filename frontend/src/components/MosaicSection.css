@@ -1,0 +1,31 @@
+.mosaic-container {
+    padding: 10px;
+  }
+  
+  .mosaic-description {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--y2k-silver);
+  }
+  
+  .mosaic-grid-wrapper {
+    display: flex;
+    justify-content: center;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 767px) {
+    .mosaic-grid-wrapper {
+      padding: 10px;
+    }
+    
+    .mosaic-description {
+      font-size: 0.9rem;
+    }
+  }

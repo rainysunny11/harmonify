@@ -12,7 +12,7 @@ export const getTokenFromURL = () => {
     }, {});
 };
 
-// Tim Range
+// Time Range
 export const getTimeRangeLabel = (timeRange) => {
     switch (timeRange) {
         case 'short_term':
@@ -29,8 +29,11 @@ export const getTimeRangeLabel = (timeRange) => {
 // Fetch user's top tracks
 export const getTopTracks = async (token, timeRange = 'short_term', limit = 10) => {
     try {
+        // Spotify API has a max limit of 50 items per request
+        const maxLimit = Math.min(limit, 50);
+        
         const response = await fetch(
-        `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=${limit}`, 
+        `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=${maxLimit}`, 
         {
             headers: {
             'Authorization': `Bearer ${token}`,
@@ -53,8 +56,11 @@ export const getTopTracks = async (token, timeRange = 'short_term', limit = 10) 
 // Fetch user's top artists
 export const getTopArtists = async (token, timeRange = 'short_term', limit = 10) => {
     try {
+        // Spotify API has a max limit of 50 items per request
+        const maxLimit = Math.min(limit, 50);
+        
         const response = await fetch(
-        `https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=${limit}`, 
+        `https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=${maxLimit}`, 
         {
             headers: {
             'Authorization': `Bearer ${token}`,

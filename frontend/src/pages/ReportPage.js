@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import TimeRangeSelector from '../components/TimeRangeSelector';
+import ReportSection from '../components/ReportSection';
+import MosaicSection from '../components/MosaicSection';
 import { getTopTracks, getTopArtists, getTimeRangeLabel } from '../tools/SpotifyData';
-import html2canvas from 'html2canvas';
 import './Pages.css';
 import Footer from '../components/footer';
 
@@ -13,10 +14,6 @@ const ReportPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
   const [flippedCards, setFlippedCards] = useState({});
-  
-  // Refs for the sections we want to download
-  const artistsGridRef = useRef(null);
-  const tracksGridRef = useRef(null);
 
   // Handle initial data loading
   useEffect(() => {
@@ -26,10 +23,9 @@ const ReportPage = () => {
     } else {
       setIsLoading(false);
     }
-  }, [timeRange]); // Added timeRange as a dependency
+  }, [timeRange]);
   
-  // Handle time range changes - this is now redundant since we added timeRange to the first useEffect
-  // Keeping just the flipped cards reset logic
+  // Handle time range changes - reset flipped cards
   useEffect(() => {
     setFlippedCards({});
   }, [timeRange]);
@@ -39,8 +35,8 @@ const ReportPage = () => {
     setIsLoading(true);
     
     try {
-      // Get top tracks
-      const tracks = await getTopTracks(token, range, 9);
+      // Get top tracks (get 50 for the mosaic)
+      const tracks = await getTopTracks(token, range, 50);
       if (tracks) setTopTracks(tracks);
       
       // Get top artists
@@ -63,55 +59,22 @@ const ReportPage = () => {
   };
   
   // Handle card flip
-  const toggleCardFlip = (id) => {
-    // Don't toggle when downloading
-    if (isDownloading) return;
+  const handleToggleFlip = (id, reset = false, restore = false) => {
+    if (isDownloading && !restore) return;
     
-    setFlippedCards(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
-  };
-  
-  // We'll use the TimeRangeSelector component instead of a custom one
-
-  // Function to download grid as image
-  const downloadAsImage = async (ref, fileName) => {
-    if (!ref.current) return;
-    
-    setIsDownloading(true);
-    
-    // First, ensure all cards are showing front face for the screenshot
-    const currentFlippedState = {...flippedCards};
-    setFlippedCards({});
-    
-    // Wait a moment for the state to update and cards to flip back
-    setTimeout(async () => {
-      try {
-        // Capture with improved settings
-        const canvas = await html2canvas(ref.current, {
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#1e1e1e",
-          scale: 2,
-        });
-        
-        // Create download link
-        const link = document.createElement('a');
-        link.download = fileName;
-        link.href = canvas.toDataURL('image/png');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error("Error creating image:", error);
-        alert("Could not download the image. This might be due to CORS restrictions.");
-      } finally {
-        // Restore previous card states
-        setFlippedCards(currentFlippedState);
-        setIsDownloading(false);
-      }
-    }, 100);
+    if (reset) {
+      // Reset all cards to not flipped
+      setFlippedCards({});
+    } else if (restore) {
+      // Restore to a previous state
+      setFlippedCards(id); // In this case, 'id' is actually the full state object
+    } else {
+      // Toggle single card
+      setFlippedCards(prev => ({
+        ...prev,
+        [id]: !prev[id]
+      }));
+    }
   };
 
   return (
@@ -139,133 +102,40 @@ const ReportPage = () => {
             />
           </div>
 
-          {/* Top Artists Grid */}
-          <div className="y2k-container mb-5 position-relative">
-            <h3 className="y2k-heading">
-              Your Top Artists {getTimeRangeLabel(timeRange)}
-            </h3>
-            
-            <button
-              className="download-button"
-              onClick={() => downloadAsImage(artistsGridRef, `top-artists-${timeRange}.png`)}
-              disabled={isDownloading}
-            >
-              {isDownloading ? 'Processing...' : 'Save Image'}
-            </button>
-            
-            <div ref={artistsGridRef}>
-              <div className="grid-wrapper">
-                {topArtists && topArtists.length > 0 ? (
-                  topArtists.slice(0, 9).map((artist, index) => (
-                    <div key={artist.id} className="square-item">
-                      <div className="square-content">
-                        <div 
-                          className={`flip-card ${flippedCards['artist-'+artist.id] ? 'flipped' : ''}`} 
-                          onClick={() => toggleCardFlip('artist-'+artist.id)}
-                        >
-                          <div className="flip-card-inner">
-                            {/* Front of card */}
-                            <div className="flip-card-front">
-                              <div className="card-rank">{index + 1}</div>
-                              <img 
-                                src={artist.images && artist.images[0] ? artist.images[0].url : '/placeholder-artist.png'} 
-                                alt={artist.name}
-                                crossOrigin="anonymous"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                              />
-                            </div>
-                            
-                            {/* Back of card */}
-                            <div className="flip-card-back">
-                              <div className="back-content">
-                                <div className="card-rank">{index + 1}</div>
-                                <h3 className="back-title">{artist.name}</h3>
-                                <p className="back-subtitle">
-                                  {artist.genres && artist.genres.length > 0 
-                                    ? artist.genres.slice(0, 2).join(', ')
-                                    : 'Artist'}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="col-12 text-center py-4">
-                    <p>No data available for this time period</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          {/* Artists Section */}
+          <ReportSection
+            title="Your Top Artists"
+            items={topArtists}
+            type="artist"
+            timeRange={timeRange}
+            timeRangeLabel={getTimeRangeLabel(timeRange)}
+            flippedCards={flippedCards}
+            onToggleFlip={handleToggleFlip}
+            isDownloading={isDownloading}
+            setIsDownloading={setIsDownloading}
+          />
 
-          {/* Top Tracks Grid */}
-          <div className="y2k-container mb-5 position-relative">
-            <h3 className="y2k-heading">
-              Your Top Tracks {getTimeRangeLabel(timeRange)}
-            </h3>
-            
-            <button
-              className="download-button"
-              onClick={() => downloadAsImage(tracksGridRef, `top-tracks-${timeRange}.png`)}
-              disabled={isDownloading}
-            >
-              {isDownloading ? 'Processing...' : 'Save Image'}
-            </button>
-            
-            <div ref={tracksGridRef}>
-              <div className="grid-wrapper">
-                {topTracks && topTracks.length > 0 ? (
-                  topTracks.slice(0, 9).map((track, index) => (
-                    <div key={track.id} className="square-item">
-                      <div className="square-content">
-                        <div 
-                          className={`flip-card ${flippedCards['track-'+track.id] ? 'flipped' : ''}`} 
-                          onClick={() => toggleCardFlip('track-'+track.id)}
-                        >
-                          <div className="flip-card-inner">
-                            {/* Front of card */}
-                            <div className="flip-card-front">
-                              <div className="card-rank">{index + 1}</div>
-                              <img 
-                                src={track.album && track.album.images && track.album.images[0] ? track.album.images[0].url : '/placeholder-album.png'} 
-                                alt={track.name}
-                                crossOrigin="anonymous"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                              />
-                            </div>
-                            
-                            {/* Back of card */}
-                            <div className="flip-card-back">
-                              <div className="back-content">
-                                <div className="card-rank">{index + 1}</div>
-                                <h3 className="back-title">{track.name}</h3>
-                                <p className="back-subtitle">
-                                  {track.artists.map(artist => artist.name).join(', ')}
-                                </p>
-                                <p className="back-subtitle">
-                                  {track.album.name}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="col-12 text-center py-4">
-                    <p>No data available for this time period</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          {/* Tracks Section */}
+          <ReportSection
+            title="Your Top Tracks"
+            items={topTracks ? topTracks.slice(0, 9) : null}
+            type="track"
+            timeRange={timeRange}
+            timeRangeLabel={getTimeRangeLabel(timeRange)}
+            flippedCards={flippedCards}
+            onToggleFlip={handleToggleFlip}
+            isDownloading={isDownloading}
+            setIsDownloading={setIsDownloading}
+          />
+          
+          {/* Mosaic Section */}
+          <MosaicSection 
+            items={topTracks}
+            timeRange={timeRange}
+            timeRangeLabel={getTimeRangeLabel(timeRange)}
+          />
           
           <Footer/>
-          
         </>
       )}
     </div>

@@ -1,0 +1,15 @@
+/* Grid Layout Styles */
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 767px) {
+    .grid-wrapper {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+  }

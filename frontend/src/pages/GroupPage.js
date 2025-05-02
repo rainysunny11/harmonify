@@ -11,8 +11,6 @@ const GroupPage = () => {
       
       <div className="y2k-container">
         <h3 className="y2k-heading">Create Group Session</h3>
-        <p>This is a placeholder for the group statistics page where users can compare their music taste with friends or see aggregate statistics.</p>
-        
         <div className="text-center py-4">
           <p>Coming soon! This feature is currently in development.</p>
           <div className="mt-3">

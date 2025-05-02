@@ -1,0 +1,27 @@
+/* Download Button Styles */
+.download-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--y2k-blue);
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    opacity: 0;
+  }
+  
+  .y2k-container:hover .download-button {
+    opacity: 1;
+  }
+  
+  .download-button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+  }
